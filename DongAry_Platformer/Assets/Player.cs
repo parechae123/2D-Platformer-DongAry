@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     RaycastHit2D hit;
     float moveSpeed = 10;
     public LayerMask mask;
+    public LayerMask monsterLayer;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -22,5 +23,17 @@ public class Player : MonoBehaviour
         {
             rb.AddForce(Vector2.up*0.1f, ForceMode2D.Impulse);
         }
+        if (Input.GetKey(KeyCode.C))
+        {
+            if (Physics2D.Raycast(transform.position, Vector2.right, 2, monsterLayer))
+            {
+                Debug.DrawRay(transform.position, Vector2.right * 2, Color.red);
+            }
+            if (Physics2D.Raycast(transform.position, Vector2.left, 2, monsterLayer))
+            {
+                Debug.DrawRay(transform.position, Vector2.left * 2, Color.red);
+            }
+        }
+
     }
 }
