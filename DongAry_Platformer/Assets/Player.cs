@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -10,9 +11,12 @@ public class Player : MonoBehaviour
     float moveSpeed = 10;
     public LayerMask mask;
     public LayerMask monsterLayer;
+    public bool isPlayerWatchingRight;
+    public SpriteRenderer IMG;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        IMG = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -25,15 +29,24 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.C))
         {
-            if (Physics2D.Raycast(transform.position, Vector2.right, 2, monsterLayer))
+            if (Physics2D.Raycast(transform.position, Vector2.right, 2, monsterLayer)&& isPlayerWatchingRight)
             {
                 Debug.DrawRay(transform.position, Vector2.right * 2, Color.red);
             }
-            if (Physics2D.Raycast(transform.position, Vector2.left, 2, monsterLayer))
+            if (Physics2D.Raycast(transform.position, Vector2.left, 2, monsterLayer)&& !isPlayerWatchingRight)
             {
                 Debug.DrawRay(transform.position, Vector2.left * 2, Color.red);
             }
         }
-
+        if (Input.GetAxis("Horizontal")>0)
+        {
+            isPlayerWatchingRight = true;
+            IMG.flipX = false;
+        }
+        if (Input.GetAxis("Horizontal") < 0)
+        {
+            isPlayerWatchingRight = false;
+            IMG.flipX = true;
+        }
     }
 }
